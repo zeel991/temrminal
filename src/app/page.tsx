@@ -1,9 +1,6 @@
-import ContractWrite from '@/components/ContractWrite'
-import WalletConnect from '../components/WalletConnect'
-import Balance from '@/components/Balance'
-import SendTransaction from '@/components/SendTransaction'
-import SwitchNetwork from '@/components/SwitchNetwork'
-import Token from '@/components/Token'
+import ContractWrite from "@/components/ContractWrite";
+import Balance from "@/components/Balance";
+import Token from "@/components/Token";
 
 export default function Home() {
   return (
@@ -16,8 +13,11 @@ export default function Home() {
           <p className="text-lg text-gray-600 mb-8">
             Connect your wallet to access Web3 features
           </p>
-          
-          <div> <Token /></div>
+
+          <div>
+            {" "}
+            <Token />
+          </div>
           <Balance />
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -41,11 +41,10 @@ export default function Home() {
           </div>
 
           <div>
-            {/* <SendTransaction /> */}
             <ContractWrite />
           </div>
         </div>
       </div>
     </main>
-  )
+  );
 }

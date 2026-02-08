@@ -1,15 +1,12 @@
-'use client'
+"use client";
 
-import { PrivyProvider } from '@privy-io/react-auth'
-import { privyConfig } from '@/lib/privy-config'
-
-// Replace this with any of the networks listed at https://github.com/wevm/viem/blob/main/src/chains/index.ts
-import {base, berachain, polygon, arbitrum, story, mantle} from 'viem/chains';
+import { PrivyProvider } from "@privy-io/react-auth";
+import { privyConfig } from "@/lib/privy-config";
 
 export default function PrivyProviderWrapper({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <PrivyProvider
@@ -18,5 +15,5 @@ export default function PrivyProviderWrapper({
     >
       {children}
     </PrivyProvider>
-  )
+  );
 }

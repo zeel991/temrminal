@@ -120,7 +120,6 @@ export default function TerminalPage() {
   });
   const usdcBalance = usdcBalanceRaw ?? 0n;
 
-  // Position hooks for all three assets
   const { data: solPositionRaw } = useReadContract({
     address: LEVERAGED_TRADING_ADDRESS,
     abi: LEVERAGED_TRADING_ABI,
@@ -160,9 +159,10 @@ export default function TerminalPage() {
   const buyingPower = buyingPowerRaw ?? 0n;
   const debt = debtRaw ?? 0n;
   const shareValue = shareValueRaw ?? 0n;
-  const usedPct =
+
+  const healthPct =
     buyingPower > 0n ? Number((debt * 10000n) / buyingPower) / 100 : 0;
-  const isDanger = usedPct >= 70;
+  const isDanger = healthPct >= 70;
 
   const handleApproveUsdc = () => {
     const amt = parseUnits(betAmount, 6);
@@ -230,8 +230,6 @@ export default function TerminalPage() {
   }
 
   const remainingBuyingPower = buyingPower > debt ? buyingPower - debt : 0n;
-  const healthPct =
-    buyingPower > 0n ? Number((debt * 10000n) / buyingPower) / 100 : 0;
 
   return (
     <main className="min-h-screen bg-[#000] text-[#b366ff] font-mono p-6">
@@ -244,7 +242,6 @@ export default function TerminalPage() {
           </Link>
         </header>
 
-        {/* How it works */}
         <section className="bg-[#0a0a0a]/80 border border-[#b366ff]/20 rounded p-4 mb-6">
           <div className="text-xs text-[#b366ff]/60 uppercase tracking-widest mb-2">
             How it works
@@ -259,7 +256,6 @@ export default function TerminalPage() {
           </p>
         </section>
 
-        {/* Live Price Ticker */}
         <section className="bg-[#0a0a0a] border border-[#b366ff]/30 rounded p-4 mb-6">
           <div className="text-xs text-[#b366ff]/60 uppercase tracking-widest mb-2">
             Live Price
@@ -281,7 +277,6 @@ export default function TerminalPage() {
           </div>
         </section>
 
-        {/* 75% Health Ratio / Leverage */}
         <section className="mb-6">
           <div className="text-xs text-[#b366ff]/60 uppercase tracking-widest mb-3">
             75% health ratio · leverage used
@@ -319,12 +314,11 @@ export default function TerminalPage() {
             />
           </div>
           <div className="mt-1 text-xs text-[#b366ff]/50">
-            Bar shows how much of your 75% buying power you've used for
+            Bar shows how much of your 75% buying power you&apos;ve used for
             positions. Red when &gt;70%; above 75% = liquidatable.
           </div>
         </section>
 
-        {/* What to do next (after first bet) */}
         {(shareValue > 0n || debt > 0n) && (
           <section className="mb-6 p-4 rounded border border-[#b366ff]/30 bg-[#b366ff]/5">
             <div className="text-xs text-[#b366ff]/60 uppercase tracking-widest mb-2">
@@ -345,8 +339,8 @@ export default function TerminalPage() {
               )}
               {remainingBuyingPower === 0n && buyingPower > 0n && (
                 <li>
-                  You've used all your current buying power for positions. Buy
-                  more YES/NO with USDC to add collateral, or wait for your
+                  You&apos;ve used all your current buying power for positions.
+                  Buy more YES/NO with USDC to add collateral, or wait for your
                   token value to change.
                 </li>
               )}
@@ -355,7 +349,6 @@ export default function TerminalPage() {
           </section>
         )}
 
-        {/* Leveraged Trading - Table Layout with Charts */}
         <section className="mb-6">
           <div className="mb-4">
             <h2 className="text-sm uppercase tracking-widest text-[#b366ff]/80 mb-1">
@@ -375,7 +368,6 @@ export default function TerminalPage() {
             )}
           </div>
 
-          {/* Chart Tabs */}
           <div className="border border-[#b366ff]/30 rounded overflow-hidden bg-[#0a0a0a] mb-4">
             <div className="flex border-b border-[#b366ff]/20">
               {(["SOL", "ETH", "BTC"] as const).map((asset) => (
@@ -401,9 +393,7 @@ export default function TerminalPage() {
             </div>
           </div>
 
-          {/* Positions Table */}
           <div className="border border-[#b366ff]/30 rounded overflow-hidden bg-[#0a0a0a]">
-            {/* Table Header */}
             <div className="grid grid-cols-7 gap-4 px-5 py-3 bg-[#000]/60 border-b border-[#b366ff]/20 text-xs text-[#b366ff]/60 uppercase tracking-wider">
               <div>Asset</div>
               <div className="text-right">Live Price</div>
@@ -414,7 +404,6 @@ export default function TerminalPage() {
               <div className="text-right">Actions</div>
             </div>
 
-            {/* Table Rows */}
             {(["SOL", "ETH", "BTC"] as const).map((asset) => {
               const assetPrice = pythPrices[asset];
 
@@ -427,7 +416,6 @@ export default function TerminalPage() {
               const assetEntryPrice = assetPositionRaw?.[1] ?? 0n;
               const hasAssetPosition = assetPositionUsd > 0n;
 
-              // Calculate current value and P&L
               let currentValue = 0;
               let pnlPercent = 0;
               let pnlAmount = 0;
@@ -451,20 +439,17 @@ export default function TerminalPage() {
                   key={asset}
                   className="grid grid-cols-7 gap-4 px-5 py-4 border-b border-[#b366ff]/10 hover:bg-[#b366ff]/5 transition-colors items-center"
                 >
-                  {/* Asset */}
                   <div>
                     <div className="text-[#b366ff] font-semibold">{asset}</div>
                     <div className="text-[10px] text-[#b366ff]/40">/ USD</div>
                   </div>
 
-                  {/* Live Price */}
                   <div className="text-right">
                     <div className="text-[#b366ff] font-mono tabular-nums">
                       {assetPrice ? `$${assetPrice.price.toFixed(2)}` : "—"}
                     </div>
                   </div>
 
-                  {/* Position Size */}
                   <div className="text-right">
                     {hasAssetPosition ? (
                       <div className="text-[#b366ff] font-mono tabular-nums">
@@ -476,7 +461,6 @@ export default function TerminalPage() {
                     )}
                   </div>
 
-                  {/* Entry Price */}
                   <div className="text-right">
                     {hasAssetPosition ? (
                       <div className="text-[#b366ff]/80 font-mono tabular-nums text-sm">
@@ -487,7 +471,6 @@ export default function TerminalPage() {
                     )}
                   </div>
 
-                  {/* Current Value */}
                   <div className="text-right">
                     {hasAssetPosition && assetPrice ? (
                       <div className="text-[#b366ff] font-mono tabular-nums">
@@ -498,7 +481,6 @@ export default function TerminalPage() {
                     )}
                   </div>
 
-                  {/* P&L */}
                   <div className="text-right">
                     {hasAssetPosition && assetPrice ? (
                       <div>
@@ -532,7 +514,6 @@ export default function TerminalPage() {
                     )}
                   </div>
 
-                  {/* Actions */}
                   <div className="text-right flex justify-end gap-2">
                     {!hasAssetPosition ? (
                       <button
@@ -581,7 +562,6 @@ export default function TerminalPage() {
             })}
           </div>
 
-          {/* Open Position Form */}
           <div className="mt-4 border border-[#b366ff]/30 rounded p-4 bg-[#0a0a0a]">
             <div className="text-xs text-[#b366ff]/60 uppercase tracking-widest mb-3">
               Open New Position
@@ -652,7 +632,6 @@ export default function TerminalPage() {
           </div>
         </section>
 
-        {/* Place Bet - Two separate buttons */}
         <section className="mb-6 border border-[#b366ff]/30 rounded p-5 bg-[#0a0a0a]">
           <h2 className="text-sm uppercase tracking-widest text-[#b366ff]/80 mb-2">
             Place bet
@@ -720,7 +699,6 @@ export default function TerminalPage() {
           </div>
         </section>
 
-        {/* Withdraw from pool (testing / initial liquidity) */}
         <section className="mt-6 border border-[#b366ff]/20 rounded p-4 bg-[#0a0a0a]">
           <h2 className="text-sm uppercase tracking-widest text-[#b366ff]/60 mb-2">
             Withdraw from pool (testing)
