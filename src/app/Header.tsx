@@ -39,33 +39,17 @@ const Header: React.FC = () => {
 
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider"
-            >
-              Home
-            </Link>
-            <Link
-              href="/terminal"
-              className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider"
-            >
-              Terminal
-            </Link>
-            <Link
-              href="/debug"
-              className="text-amber-400/70 hover:text-amber-400 transition-colors duration-200 text-sm font-mono uppercase tracking-wider flex items-center gap-1"
-            >
-              <span>🔍</span>
-              Debug
-            </Link>
+              <Link
+                href="/"
+                className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider"
+              >
+                Home
+              </Link>
           </nav>
 
           {/* Wallet Connection & Network Switch */}
           <div className="flex items-center space-x-4">
             {/* Network Switcher */}
-            <div className="hidden sm:block">
-              <SwitchNetwork />
-            </div>
 
             {/* Wallet Connect Component */}
             <div className="flex items-center">
@@ -115,24 +99,6 @@ const Header: React.FC = () => {
               >
                 Home
               </Link>
-              <Link
-                href="/terminal"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider px-4 py-2"
-              >
-                Terminal
-              </Link>
-              <Link
-                href="/debug"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-amber-400/70 hover:text-amber-400 transition-colors duration-200 text-sm font-mono uppercase tracking-wider flex items-center gap-2 px-4 py-2"
-              >
-                <span>🔍</span>
-                Debug
-              </Link>
-              <div className="px-4 py-2 sm:hidden">
-                <SwitchNetwork />
-              </div>
             </nav>
           </div>
         )}

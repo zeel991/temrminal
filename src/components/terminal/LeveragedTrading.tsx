@@ -255,4 +255,4 @@ export default function LeveragedTrading({
       </div>
     </section>
   );
-}
+} 
