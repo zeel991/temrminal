@@ -1,16 +1,21 @@
-import React from 'react';
-import WalletConnect from '@/components/WalletConnect';
-import SwitchNetwork from '@/components/SwitchNetwork';
+"use client";
+
+import React, { useState } from "react";
+import WalletConnect from "@/components/WalletConnect";
+import SwitchNetwork from "@/components/SwitchNetwork";
+import Link from "next/link";
 
 const Header: React.FC = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="bg-[#000] shadow-sm border-b border-[#b366ff]/30">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex items-center">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#b366ff] to-[#8b45d6] rounded-lg flex items-center justify-center">
                 <svg
                   className="w-5 h-5 text-white"
                   fill="none"
@@ -22,48 +27,37 @@ const Header: React.FC = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                   />
                 </svg>
               </div>
-              <h1 className="text-xl font-bold text-gray-900">
-                My Wallet
+              <h1 className="text-xl font-bold text-[#b366ff] font-mono tracking-wider">
+                PREDICTION TERMINAL
               </h1>
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a
+            <Link
+              href="/"
+              className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider"
+            >
+              Home
+            </Link>
+            <Link
               href="/terminal"
-              className="text-gray-600 hover:text-gray-900 transition-colors duration-200"
+              className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider"
             >
               Terminal
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 transition-colors duration-200"
+            </Link>
+            <Link
+              href="/debug"
+              className="text-amber-400/70 hover:text-amber-400 transition-colors duration-200 text-sm font-mono uppercase tracking-wider flex items-center gap-1"
             >
-              Dashboard
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 transition-colors duration-200"
-            >
-              Transactions
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 transition-colors duration-200"
-            >
-              Settings
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-gray-900 transition-colors duration-200"
-            >
-              Help
-            </a>
+              <span>🔍</span>
+              Debug
+            </Link>
           </nav>
 
           {/* Wallet Connection & Network Switch */}
@@ -72,14 +66,17 @@ const Header: React.FC = () => {
             <div className="hidden sm:block">
               <SwitchNetwork />
             </div>
-            
+
             {/* Wallet Connect Component */}
             <div className="flex items-center">
               <WalletConnect />
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden p-2 text-gray-600 hover:text-gray-900">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-[#b366ff]/70 hover:text-[#b366ff]"
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -87,16 +84,58 @@ const Header: React.FC = () => {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
+                {mobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
               </svg>
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-[#b366ff]/20 py-4">
+            <nav className="flex flex-col space-y-3">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider px-4 py-2"
+              >
+                Home
+              </Link>
+              <Link
+                href="/terminal"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[#b366ff]/70 hover:text-[#b366ff] transition-colors duration-200 text-sm font-mono uppercase tracking-wider px-4 py-2"
+              >
+                Terminal
+              </Link>
+              <Link
+                href="/debug"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-amber-400/70 hover:text-amber-400 transition-colors duration-200 text-sm font-mono uppercase tracking-wider flex items-center gap-2 px-4 py-2"
+              >
+                <span>🔍</span>
+                Debug
+              </Link>
+              <div className="px-4 py-2 sm:hidden">
+                <SwitchNetwork />
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
